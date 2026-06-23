@@ -1,22 +1,16 @@
 from conexao import conectar
 
-class Produto:
-    def __init__(self, nome, preco, categoria, ativo=True, id=None, criado_em=None):
-        self.id = id
-        self.nome = nome
-        self.preco = preco
-        self.categoria = categoria
-        self.ativo = ativo
-        self.criado_em = criado_em
+class Aluno:
+    def __init__(self, nome_aluno, media_aluno, id_aluno=None):
+        self.id_aluno = id_aluno
+        self.nome_aluno = nome_aluno
+        self.media_aluno = media_aluno
 
     def exibir(self):
         texto = f"""
-        Código: {self.id}
-        Nome: {self.nome}
-        Preco: {self.preco}
-        Categoria: {self.categoria}
-        Ativo: {self.ativo}
-        Criado em: {self.criado_em}
+        Código: {self.id_aluno}
+        Nome: {self.nome_aluno}
+        Média: {self.media_aluno}
         """
         print(texto)
 
@@ -24,23 +18,23 @@ class Produto:
         conexao = conectar()
         cursor = conexao.cursor()
         
-        sql = "INSERT INTO produto (nome, preco, categoria, ativo) VALUES (%s, %s, %s, %s)"
-        cursor.execute(sql, (self.nome, self.preco, self.categoria, self.ativo))
+        sql = "INSERT INTO aluno (nome_aluno, media_aluno) VALUES (%s, %s)"
+        cursor.execute(sql, (self.nome_aluno, self.media_aluno))
 
         conexao.commit()
         conexao.close()
 
-def listar_produtos():
+def listar_aluno():
     conexao = conectar()
     cursor = conexao.cursor()
 
-    sql = "SELECT * FROM produto"
+    sql = "SELECT * FROM aluno"
     cursor.execute(sql)
     
-    produtos = []
-    for id, nome, preco, categoria, ativo, criado_em in cursor.fetchall():
-        produto = Produto(nome, preco, categoria, ativo, id, criado_em)
-        produtos.append(produto)
+    alunos = []
+    for id_aluno, nome_aluno, media_aluno in cursor.fetchall():
+        aluno = Aluno(nome_aluno, media_aluno, id_aluno)
+        alunos.append(aluno)
 
     conexao.close()
-    return produtos
+    return alunos
